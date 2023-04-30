@@ -9,6 +9,11 @@
     - [Erigon Node Setup](#erigon-node-set-up)
     - [Diagnostics Setup](#diagnostics-set-up)
     - [Connect Erigon The Diagnostics System](#connect-the-erigon-node-to-the-diagnostics-system-setup)
+- [How Tos](#how-tows)
+    - [Build and Run](#how-to-build-and-run)
+    - [Access Diagnostics UI](#how-to-access-from-the-browser)
+    - [Run Erigon to connect with diagnostics](#how-to-run-an-erigon-node-that-can-be-connected-to-the-diagnostics-system)
+    - [Connect Erigon The Diagnostics System](#how-to-connect-erigon-node-to-the-diagnostics-system)
 - [Architecture of diagnostics system](#architecture-of-diagnostics-system)
 - [Currently implemented diagnostics](#currently-implemented-diagnostics)
     - [Code version](#code-version)
@@ -108,24 +113,15 @@ Change into the folder
 ```
 cd diagnostics
 ```
+Refer [build and run](#how-to-build-and-run) to build and run.
 
-Build the project
-```
-go build .
-```
-
-Run the application. This may take a while. Expect to see a TLS Handshake error in the terminal
-```
-./diagnostics --tls.cert demo-tls/diagnostics.crt --tls.key demo-tls/diagnostics-key.pem --tls.cacerts demo-tls/CA-cert.pem
-```
-
-To view the application in your browser, go to the URL `https://localhost:8080/ui`. Your browser will likely ask to accept the risks (due to self-signed certificate), do that.
-
-[Link to more information on this step](#how-to-build-and-run)
+Click [here](https://localhost:8080/ui) or navigate to the URL `https://localhost:8080/ui` to view the UI in your browser.
+You browser will likely ask to to accept the risks (due to self-signed certificate), do that.
 
 ## Connect the Erigon Node to the Diagnostics System setup
 [Link to more information on this step](#how-to-connect-erigon-node-to-the-diagnostics-system)
-
+# How Tos
+This section has how-tos wrt diagnostics system.
 ## How to build and run
 To build, perform `git clone`, change to the directory with the source code and run:
 
@@ -140,12 +136,13 @@ To run with premade self-signed certificates for TLS (mandatory for HTTP/2), use
 ```
 ./diagnostics --tls.cert demo-tls/diagnostics.crt --tls.key demo-tls/diagnostics-key.pem --tls.cacerts demo-tls/CA-cert.pem
 ```
+Note: This may take a while. Expect to see a TLS Handshake error in the terminal
 
-# How to access from the browser
+## How to access from the browser
 
-In the browser, go to the URL `https://localhost:8080/ui`. Your browser will likely ask to accept the risks (due to self-signed certificate), do that.
+To view the application in your in the browser, go to the URL `https://localhost:8080/ui`. You browser will likely ask to to accept the risks (due to self-signed certificate), do that.
 
-# How to run an Erigon node that can be connected to the diagnostics system
+## How to run an Erigon node that can be connected to the diagnostics system
 
 For an Erigon node to be connected to the diagnostics system, it needs to expose metrics using this command line flag:
 
@@ -177,16 +174,15 @@ http://<metrics.addr>:<metrics.port>/debug/metrics/prometheus
 
 If metrics are exposed, textual representation of metrics will be displayed in the browser.
 
-# How to connect Erigon node to the diagnostics system
+## How to connect Erigon node to the diagnostics system
 
 First, in the browser window, create a new operator session. Choose an arbitrary name. In real operations, one would choose the name
 that can be easily correlate to the node being supported, for example, name or pseudonym of the person or the company operating the node.
 
 ![create new operation session](/images/create_new_session.png)
 
-After new session is created, it will be allocated a unique 8-digit PIN number. The pin is then displayed together with the session number on the screen.
-Currently, generation of PIN numbers is not secure and always follows the same sequence, which makes testing easier. For example, the first
-allocated session PIN is always `47779410`.
+After new session is created, it will be allocated a unique 8-digit PIN number. The pin is then displayed together with the session name on the screen.
+
 
 Next, in a console window, run the following command, specifying the session PIN at the end of the `--diagnostics.url` command line flag.
 Since the website is using self-signed certificate without properly allocated CName, one needs to use `--insecure` flag to be able to connect.
