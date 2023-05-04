@@ -231,6 +231,14 @@ for the content fetched by the `fetchContent` javascript function and inserted i
 
 ![cmd line](/images/cmd_line.png)
 
+## Flags
+Operator can look at the flags that are set in cli context by the user to launch Erigon node. The corresponding code in Erigon is in the file `diagnostics/flags.go`. This is particularly useful when user launches Erigon using a config file with `--config` and [Command line arguments](#command-line-arguments) cannot fully capture the true state of the 'launch setting'. The returned flags are the result after parsing command line argument and config file by Erigon.
+
+The code on the side of the diagnostics system is spread across files `cmd/ui_handler.go` (invocation of `processFlags` function), `cmd/flags.go`, `assests/template/session.html` (html template the part where the button `Fetch Flags` is defined with the javascript handler), `assests/script/session.js` (function `fetchContent`), `assets/template/flags.html` (html template for the content fetched by the `fetchContent` javascript function and inserted into the HTML div element).
+
+![flags](/images/flags.png)
+
+
 ## Logs
 
 Since version 2.43.0, Erigon nodes write logs by default with `INFO` level into `<datadir>/logs` directory, there is log rotation. Using diagnostics system,
@@ -298,11 +306,6 @@ block numbers as all having a reorg. It would be better to aggregate these into 
 reorg point.
 * For the reorg scanner, add the ability to click on the block numbers and get more information about that particular reorg, for example, block producers
 for each of the block participating in the reorg, or difference in terms of transactions.
-* Any sessions created via User Interface, stay in the server forever and are never cleaned up, so theoretically eventually the server will run out of memory.
-This needs to be addressed by introducing some kind of expiration mechanism and cleaning up expired sessions.
-* Retrieving command line arguments is only useful if the Erigon node is not launched using configuration file. If configuration file is used, then
-most of the settings are still not visible to the operator. A possible improvement (which involves also changes in Erigon itself) is to either provide
-access to the configuration file, or somehow give access to the "effective" launch settings (i.e. after the configuration file is parsed and applied).
 * Adding more "diagnostics scripts" that remotely read DB to check for the current progress of stages in the staged sync.
 * Adding a monitoring for header downloader as well as for body downloader.
 * Perhaps embedding some metrics visualisation (have no idea how to do it), since all "prometheus"-style metrics are also available to the diagnostics system?
